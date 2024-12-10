@@ -1,8 +1,13 @@
-import { Identifiable, flattenCategories } from "@amplience/dc-integration-middleware";
 import { ContentFieldExtension, init } from 'dc-extensions-sdk';
-import { initCommerceApi } from "../pages/api";
-import { ExtParameters, FieldModel } from "./models/extensionParams";
-import _ from 'lodash'
+import _ from 'lodash';
+
+import {
+	flattenCategories,
+	Identifiable,
+} from '@amplience/dc-integration-middleware';
+
+import { initCommerceApi } from '../pages/api';
+import { ExtParameters, FieldModel } from './models/extensionParams';
 
 export type ValueType = Identifiable | Identifiable[] | string | string[] | null
 
@@ -40,6 +45,47 @@ const amplienceSDK = async () => {
     // end
 
     let { instance, installation } = sdk.params as ExtParameters
+
+    const formModel = await sdk.form.getValue();
+
+    function findValueByKey(obj, targetKey) {
+        let result;
+
+        function search(obj) {
+            for (const key in obj) {
+                if (key === targetKey) {
+                    result = obj[key];
+                    return;
+                } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    search(obj[key]);
+                    if (result !== undefined) return;
+                }
+            }
+        }
+
+        search(obj);
+        return result;
+    }
+
+    let siteID = findValueByKey(formModel, 'site_id');
+
+    installation.codec_params.site_id = siteID;
+
+    let previousSiteID = siteID;
+
+    async function monitorSDKValue() {
+            const formValue = await sdk.form.getValue();
+            const currentSiteID = findValueByKey(formValue, 'site_id');
+
+            if (currentSiteID !== previousSiteID) {
+                window.location.reload();
+                console.log(`siteID changed: ${previousSiteID} → ${currentSiteID}`);
+                previousSiteID = currentSiteID;
+            }
+    }
+
+    await sdk.form.onFormValueChange(()=>{monitorSDKValue()});
+
     let commerceApi = await initCommerceApi(installation)
 
     if (instance.data === 'category') {
@@ -51,9 +97,9 @@ const amplienceSDK = async () => {
             let categoryTree: any[] = await commerceApi.getCategoryTree({})
             values = flattenCategories(categoryTree).map(cat => ({ name: `(${cat.slug}) ${cat.name}`, slug: cat.slug, id: cat.id }))
 
-            value = instance.type === 'string' && value ? 
-                (instance.view === 'multi' ? 
-                    values.filter(opt => value.includes(opt.id)) : 
+            value = instance.type === 'string' && value ?
+                (instance.view === 'multi' ?
+                    values.filter(opt => value.includes(opt.id)) :
                     values.find(opt => cleanValue(value) === opt.id)) :
                 instance.type === 'object' && value ?
                     values.find(opt => value.id === opt.id) :
@@ -66,8 +112,8 @@ const amplienceSDK = async () => {
     }
     else { // a.data === 'customerGroups'
         values = await commerceApi.getCustomerGroups({})
-        value = instance.type === 'string' && value ? 
-            (instance.view === 'multi' ? 
+        value = instance.type === 'string' && value ?
+            (instance.view === 'multi' ?
                 values.filter(opt => value.includes(opt.id)) :
                 values.find(opt => cleanValue(value) === opt.id)) :
             value
