@@ -13,3 +13,8 @@ frontend:
     baseDirectory: out
     files:
       - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+  env:
+      INTEGRATION_MIDDLEWARE_SERVER: '1'
