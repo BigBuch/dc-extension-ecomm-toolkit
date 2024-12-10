@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import CircularProgress from '@mui/material/CircularProgress'
+import React, { useEffect, useState } from 'react';
 
+import { Card, CardContent, Dialog, Divider, Typography } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 // import './App.css';
-import Stack from '@mui/material/Stack'
+import Stack from '@mui/material/Stack';
 
-import AutoCompleteSingle from '../AutoCompleteSingle/AutoCompleteSingle'
-import AutoCompleteMultiple from '../AutoCompleteMultiple/AutoCompleteMultiple'
-import TreeViewSingle from '../TreeViewSingle/TreeViewSingle'
-import ProductSelector from '../ProductSelector'
-
-import amplienceSDK from '../../lib/sdk'
-import { Typography, Divider, Dialog, Card, CardContent } from '@mui/material'
-import { Utils } from '../../lib/util'
+import amplienceSDK from '../../lib/sdk';
+import { Utils } from '../../lib/util';
+import AutoCompleteMultiple from '../AutoCompleteMultiple/AutoCompleteMultiple';
+import AutoCompleteSingle from '../AutoCompleteSingle/AutoCompleteSingle';
+import ProductSelector from '../ProductSelector';
+import TreeViewSingle from '../TreeViewSingle/TreeViewSingle';
 
 function App() {
     const [ampSDK, setAmpSDK] = useState<any>(undefined)

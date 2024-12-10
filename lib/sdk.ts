@@ -6,7 +6,6 @@ import {
 	Identifiable,
 } from '@amplience/dc-integration-middleware';
 
-import { triggerRerender } from '../pages/_app';
 import { initCommerceApi } from '../pages/api';
 import { ExtParameters, FieldModel } from './models/extensionParams';
 
@@ -79,7 +78,7 @@ const amplienceSDK = async () => {
             const currentSiteID = findValueByKey(formValue, 'site_id');
 
             if (currentSiteID !== previousSiteID) {
-                triggerRerender();
+                window.location.reload();
                 console.log(`siteID changed: ${previousSiteID} → ${currentSiteID}`);
                 previousSiteID = currentSiteID;
             }
