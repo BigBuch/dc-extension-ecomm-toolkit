@@ -14,7 +14,8 @@ const App = dynamic(
 function MyApp({ Component, pageProps }) {
   const [key, setKey] = useState(0);
   triggerRerender = () => {
-    setKey((prevKey) => prevKey + 1); // Збільшуємо ключ, щоб викликати перерендеринг
+    setKey((prevKey) => prevKey + 1);
+    window.location.reload();
   };
   return <>
     <App {...pageProps}>
