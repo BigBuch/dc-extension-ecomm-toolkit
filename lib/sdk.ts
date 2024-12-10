@@ -78,7 +78,7 @@ const amplienceSDK = async () => {
             const currentSiteID = findValueByKey(formValue, 'site_id');
 
             if (currentSiteID !== previousSiteID) {
-                window.location.reload();
+                window.location.href = window.location.href;
                 console.log(`siteID changed: ${previousSiteID} → ${currentSiteID}`);
                 previousSiteID = currentSiteID;
             }
