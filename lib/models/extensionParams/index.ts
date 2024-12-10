@@ -1,5 +1,10 @@
-import { CommerceCodec } from "@amplience/dc-integration-middleware";
+import { CommerceCodec } from '@amplience/dc-integration-middleware';
 
+declare module "@amplience/dc-integration-middleware" {
+    interface CommerceCodec {
+        codec_params?: any
+    }
+}
 export interface ExtParameters {
     instance: InstanceParams;
     installation: CommerceCodec
