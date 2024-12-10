@@ -8,9 +8,9 @@ frontend:
         - npm ci
     build:
       commands:
-        - CI=false npm run export
+        - CI=false npm run build
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
