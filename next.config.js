@@ -5,7 +5,7 @@ module.exports = {
     unoptimized: true
   },
   env: {
-    INTEGRATION_MIDDLEWARE_SERVER: process.env.INTEGRATION_MIDDLEWARE_SERVER
+    INTEGRATION_MIDDLEWARE_SERVER: 1
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

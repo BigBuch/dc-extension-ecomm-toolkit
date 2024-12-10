@@ -6,9 +6,9 @@ frontend:
         - npm install
     build:
       commands:
-        - npm run export
+        - npm run build
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
